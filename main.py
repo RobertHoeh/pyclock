@@ -12,7 +12,7 @@ each module must implement a disp() and input() method.
 disp() must return a list containing a dictionary for
 each element on screen
 
-input() must return a list containg input objects
+input() must return a list containg input object
 
 DICTIONARY INSTRUCTIONS:
 each dictionary must contain a display, x, and y
