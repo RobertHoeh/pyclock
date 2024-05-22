@@ -81,14 +81,13 @@ class Hub:
             self.inputInfo = eval(module.input())
 
     def disp(self, w):
-        for i in self.dispInfo:
-            if len(i.content.splitlines()) > 1:
-                for l in i.content:
-                    self.win.addstr(i.pos.y, i.pos.x, i.content)
+        for element in self.dispInfo:
+            for line, lineNum in enumerate(element.content):
+                self.win.addstr(element.pos.y + lineNum, element.pos.x, line)
 
-        for i in self.inputInfo:
-            inpDict = i.disp()
-            self.win.addstr(i.pos.y, i.pos.x, i.content)
+        for element in self.inputInfo:
+            for line, lineNum in enumerate(element.content):
+                self.win.addstr(element.pos.y + lineNum, element.pos.x, line)
 
     def input(self, w):
         match w.getch():
