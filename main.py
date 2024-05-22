@@ -1,6 +1,7 @@
 import curses
 import time as t
 import os
+from types import Pos
 """
 This class works by creating tabs and providing each 
 class in funcs a specific tab and, once "clicked" on,
@@ -32,7 +33,7 @@ class Hub:
         #if self.cursorMode == True, only the first list is used
         self.buttons = [[]]
         #format is y, x
-        self.cursorPos = [0, 0]
+        self.cursorPos = Pos(0, 0)
         #self.cursorMode, True = 1D (relies on order parameter and only
         #uses self.cursorPos[0]), False = 2D (relies on where the element
         #lies in self.buttons)
@@ -41,7 +42,7 @@ class Hub:
     def checkModule(self, module):
         return hasattr(
             __import__(
-                f"funcs.{module}",
+                f"modules.{module}",
                 globals(),
                 locals(),
                 [],
@@ -83,39 +84,39 @@ class Hub:
         for i in self.dispDict:
             if len(i["content"].splitlines()) > 1:
                 for l in i["content"]:
-                    self.win.addstr(i["y"], i["x"], i["content"])
+                    self.win.addstr(i["pos"].y, i["pos"].x, i["content"])
 
         for i in self.inputlist:
             inpDict = i.disp()
-            self.win.addstr(i["y"], i["x"], i["content"])
+            self.win.addstr(i["pos"].y, i["pos"].x, i["content"])
 
     def input(self, w):
         input = w.getch();
         if self.cursorMode:
             if input == curses.KEY_LEFT or input == curses.KEY_DOWN:
-                self.cursorPos[0] += 1
+                self.cursorPos.y += 1
             if input == curses.KEY_RIGHT or input == curses.KEY_UP:
-                self.cursorPos[0] -= 1
+                self.cursorPos.y -= 1
         else:
-            self.cursorPos[0] += (input == curses.KEY_RIGHT)
-            self.cursorPos[0] -= (input == curses.KEY_LEFT)
-            self.cursorPos[1] += (input == curses.KEY_DOWN)
-            self.cursorPos[1] -= (input == curses.KEY_UP)
+            self.cursorPos.y += (input == curses.KEY_RIGHT)
+            self.cursorPos.y -= (input == curses.KEY_LEFT)
+            self.cursorPos.x += (input == curses.KEY_DOWN)
+            self.cursorPos.x -= (input == curses.KEY_UP)
         if input == curses.KEY_ENTER:
             if self.cursorMode:
                 #self.buttons[self.cursorPos[0]][self.cursorPos[1]].onClick(self)
                 for i in self.buttons:
-                    if self.buttons.order == self.cursorPos[0]:
-                        self.buttons[0][self.cursorPos[0]].onClick(self)
+                    if self.buttons.order == self.cursorPos.x:
+                        self.buttons[0][self.cursorPos.x].onClick(self)
                         break
             else:
-                self.buttons[self.cursorPos[0]][self.cursorPos[1]].onClick(self)
+                self.buttons[self.cursorPos.y][self.cursorPos.x].onClick(self)
 
     def renderButtons(self, w):
-        buttonDict = self.buttons[self.cursorPos[0]][self.cursorPos[1]].disp()
+        buttonDict = self.buttons[self.cursorPos.y][self.cursorPos.x].disp()
         self.win.chgat(
-            buttonDict["y"],
-            buttonDict["x"],
+            buttonDict["pos"].y,
+            buttonDict["pos"].x,
             len(buttonDict["content"]),
             curses.A_REVERSE
         )
@@ -124,8 +125,8 @@ class Hub:
         for i in self.buttons:
             dict = i.disp()
             self.win.chgat(
-                dict["y"],
-                dict["x"],
+                dict["pos"].y,
+                dict["pos"].x,
                 len(buttonDict["content"]),
                 curses.A_NORMAL
             )

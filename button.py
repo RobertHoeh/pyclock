@@ -1,10 +1,10 @@
 import curses
 import os
+from types import Pos
 
 class Button:
-    def __init__(self, x, y, content, order):
-        self.x = x
-        self.y = y
+    def __init__(self, pos, content, order):
+        self.pos = pos
         self.text = content
         self.order = order
 
@@ -13,6 +13,5 @@ class Button:
     def disp(self):
         return {
             "content": self.content,
-            "x": self.x,
-            "y": self.y
+            "pos": self.pos
         }

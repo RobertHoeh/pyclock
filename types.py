@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
 @dataclass
-class point:
+class Pos:
     x: int
     y: int
