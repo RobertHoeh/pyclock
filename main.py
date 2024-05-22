@@ -147,5 +147,6 @@ class Hub:
 
         return finStr
 
-h = Hub()
-h.main()
+if __name__ == "__main__":
+    h = Hub()
+    Hub.main()
