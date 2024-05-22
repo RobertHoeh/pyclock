@@ -2,5 +2,5 @@
 pkgs.mkShell {
     packages = [
         pkgs.python3
-    ]
+    ];
 }
