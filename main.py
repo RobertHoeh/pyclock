@@ -91,7 +91,7 @@ class Hub:
             self.win.addstr(i.pos.y, i.pos.x, i.content)
 
     def input(self, w):
-        input = w.getch();
+        input = w.getch()
         if self.cursorMode:
             if input == curses.KEY_LEFT or input == curses.KEY_DOWN:
                 self.cursorPos.y += 1
