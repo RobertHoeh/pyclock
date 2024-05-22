@@ -23,10 +23,10 @@ y is where it will be displayed on screen"""
 class Hub:
     def __init__(self, currentModule="clock"):
         self.dir = os.getcwd()
-        self.loadedModules = [x for x in\
+        self.loadedModules = [module for module in\
                               os.listdir(self.dir+"/funcs")\
                               if x != "__pycache__"
-                              and self.checkModule(x)]
+                              and self.checkModule(module)]
         self.currentModule = currentModule
         self.tabsAt = []
         self.tabStr = self.createTabs()
