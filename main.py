@@ -1,6 +1,6 @@
 import curses
 import os
-from types import Pos
+from definitions import Pos
 """
 This class works by creating tabs and providing each 
 class in funcs a specific tab and, once "clicked" on,

@@ -1,6 +1,6 @@
 import curses
 import os
-from types import Pos, DispInfo
+from definitions import Pos, DispInfo
 
 class Button:
     def __init__(self, pos, content, order):

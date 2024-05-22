@@ -1,5 +1,5 @@
 import time
-from types import Pos, DispInfo
+from definitions import Pos, DispInfo
 """provides a simple clock interface
 might implement customizable text size/ fancy text."""
 
