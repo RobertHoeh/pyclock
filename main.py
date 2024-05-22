@@ -91,25 +91,28 @@ class Hub:
             self.win.addstr(i.pos.y, i.pos.x, i.content)
 
     def input(self, w):
-        input = w.getch()
-        if self.cursorMode:
-            if input == curses.KEY_LEFT or input == curses.KEY_DOWN:
+        match w.getch():
+            # executes if self.cursorMode == True
+            case curses.KEY_LEFT | curses.KEY_DOWN if self.cursorMode:
                 self.cursorPos.y += 1
-            if input == curses.KEY_RIGHT or input == curses.KEY_UP:
+            case curses.KEY_RIGHT | curses.KEY_UP if self.cursorMode:
                 self.cursorPos.y -= 1
-        else:
-            self.cursorPos.y += (input == curses.KEY_RIGHT)
-            self.cursorPos.y -= (input == curses.KEY_LEFT)
-            self.cursorPos.x += (input == curses.KEY_DOWN)
-            self.cursorPos.x -= (input == curses.KEY_UP)
-        if input == curses.KEY_ENTER:
-            if self.cursorMode:
-                #self.buttons[self.cursorPos[0]][self.cursorPos[1]].onClick(self)
+            case curses.KEY_ENTER if self.cursorMode:
                 for i in self.buttons:
                     if self.buttons.order == self.cursorPos.x:
                         self.buttons[0][self.cursorPos.x].onClick(self)
                         break
-            else:
+
+            # executes if self.cursorMode == False
+            case curses.KEY_RIGHT:
+                self.cursorPos.y += 1
+            case curses.KEY_LEFT:
+                self.cursorPos.y -= 1
+            case curses.KEY_DOWN:
+                self.cursorPos.x += 1
+            case curses.KEY_UP:
+                self.cursorPos.x -= 1
+            case curses.KEY_ENTER:
                 self.buttons[self.cursorPos.y][self.cursorPos.x].onClick(self)
 
     def renderButtons(self, w):
