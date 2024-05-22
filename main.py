@@ -1,6 +1,7 @@
 import curses
 import os
 from definitions import Pos
+from importlib import import_module
 """
 This class works by creating tabs and providing each 
 class in funcs a specific tab and, once "clicked" on,
@@ -20,18 +21,22 @@ each dictionary must contain a display, x, and y
 display is literally what is displayed on screen and x and
 y is where it will be displayed on screen"""
 class Hub:
-    def __init__(self, currentModule="clock"):
+    def __init__(self, currentModuleName="clock"):
         self.dir = os.getcwd()
         self.loadedModules = [module for module in\
                               os.listdir(self.dir+"/modules")\
-                              if module != "__pycache__"
-                              and self.checkModule(module)]
-        self.currentModule = currentModule
+                              if module != "__pycache__"]
+        self.currentModuleName = currentModuleName
+        self.currentModule = self.getClassFromModule(
+            self.getModule(currentModuleName),
+            currentModuleName.title(),
+
+        )
         self.tabsAt = []
         self.tabStr = self.createTabs()
         #if self.cursorMode == True, only the first list is used
-        self.buttons = [[]]
-        #format is y, x
+        self.buttons = []
+        #format specified in definitions.py
         self.cursorPos = Pos(0, 0)
         #self.cursorMode, True = 1D (relies on order parameter and only
         #uses self.cursorPos[0]), False = 2D (relies on where the element
@@ -74,18 +79,34 @@ class Hub:
             self.renderButtons(w)
             self.input(w)
 
+    def getModule(self, name):
+        try:
+            module = import_module(f"modules.{name}")
+            return module
+        except:
+            raise Exception(f"Module modules.{name} not found!")
+    
+    def getClassFromModule(self, module, name, *args):
+        try:
+            moduleClass = getattr(module, name)
+            self.module = moduleClass(*args)
+            # ^ *args can break stuff if not passed in the right amount of arguments
+            if not self.module:
+                raise Exception(f"Class {name} somehow screwed up")
+        except:
+            raise Exception(f"Class {name} not found!")
+
     def getDispInfo(self):
-        with open(f"{self.dir}/funcs/{self.currentModule}.py") as module:
-            self.dispInfo = eval(module.disp())
-            self.inputInfo = eval(module.input())
+        self.dispInfo = self.module.disp()
+        self.buttons = self.module.input()
 
     def disp(self, w):
         for element in self.dispInfo:
-            for line, lineNum in enumerate(element.content):
+            for lineNum, line in enumerate(element.content):
                 self.win.addstr(element.pos.y + lineNum, element.pos.x, line)
 
-        for element in self.inputInfo:
-            for line, lineNum in enumerate(element.content):
+        for element in self.buttons:
+            for lineNum, line in enumerate(element.content):
                 self.win.addstr(element.pos.y + lineNum, element.pos.x, line)
 
     def input(self, w):
@@ -150,4 +171,4 @@ class Hub:
 
 if __name__ == "__main__":
     h = Hub()
-    Hub.main()
+    h.main()

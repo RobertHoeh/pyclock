@@ -3,9 +3,8 @@ from definitions import Pos, DispInfo
 """provides a simple clock interface
 might implement customizable text size/ fancy text."""
 
-class clock:
-    def __init__(self, w, h12):
-        self.w = w
+class Clock:
+    def __init__(self, h12 = True):
         self.format = h12
 
     def disp(self):
