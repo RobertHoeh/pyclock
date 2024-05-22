@@ -23,8 +23,8 @@ class Hub:
     def __init__(self, currentModule="clock"):
         self.dir = os.getcwd()
         self.loadedModules = [module for module in\
-                              os.listdir(self.dir+"/funcs")\
-                              if x != "__pycache__"
+                              os.listdir(self.dir+"/modules")\
+                              if module != "__pycache__"
                               and self.checkModule(module)]
         self.currentModule = currentModule
         self.tabsAt = []
