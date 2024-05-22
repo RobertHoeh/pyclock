@@ -16,4 +16,4 @@ class clock:
             )
         ]
     def input(self):
-        return [{}]
+        return []
