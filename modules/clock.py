@@ -1,4 +1,4 @@
-import time as t
+import time
 from types import Pos, DispInfo
 """provides a simple clock interface
 might implement customizable text size/ fancy text."""
@@ -11,7 +11,7 @@ class clock:
     def disp(self):
         return [
             DispInfo(
-                t.strftime("%I"),
+                time.strftime("%I"),
                 Pos(2,5)
             )
         ]

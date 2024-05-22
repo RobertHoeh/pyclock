@@ -1,5 +1,4 @@
 import curses
-import time as t
 import os
 from types import Pos
 """
