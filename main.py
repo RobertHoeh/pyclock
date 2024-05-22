@@ -68,27 +68,27 @@ class Hub:
             temp += 1
         w.refresh()
         self.win.refresh()
-        self.getDicts()
+        self.getDispInfo()
         while True:
             self.disp(w)
             self.resetRenderButtons(w)
             self.renderButtons(w)
             self.input(w)
 
-    def getDicts(self):
+    def getDispInfo(self):
         with open(f"{self.dir}/funcs/{self.currentModule}.py") as module:
-            self.dispDict = exec(module.disp())
-            self.inputlist = exec(module.input())
+            self.dispInfo = eval(module.disp())
+            self.inputInfo = eval(module.input())
 
     def disp(self, w):
-        for i in self.dispDict:
-            if len(i["content"].splitlines()) > 1:
-                for l in i["content"]:
-                    self.win.addstr(i["pos"].y, i["pos"].x, i["content"])
+        for i in self.dispInfo:
+            if len(i.content.splitlines()) > 1:
+                for l in i.content:
+                    self.win.addstr(i.pos.y, i.pos.x, i.content)
 
-        for i in self.inputlist:
+        for i in self.inputInfo:
             inpDict = i.disp()
-            self.win.addstr(i["pos"].y, i["pos"].x, i["content"])
+            self.win.addstr(i.pos.y, i.pos.x, i.content)
 
     def input(self, w):
         input = w.getch();
@@ -115,9 +115,9 @@ class Hub:
     def renderButtons(self, w):
         buttonDict = self.buttons[self.cursorPos.y][self.cursorPos.x].disp()
         self.win.chgat(
-            buttonDict["pos"].y,
-            buttonDict["pos"].x,
-            len(buttonDict["content"]),
+            buttonDict.pos.y,
+            buttonDict.pos.x,
+            len(buttonDict.content),
             curses.A_REVERSE
         )
 
@@ -125,9 +125,9 @@ class Hub:
         for i in self.buttons:
             dict = i.disp()
             self.win.chgat(
-                dict["pos"].y,
-                dict["pos"].x,
-                len(buttonDict["content"]),
+                dict.pos.y,
+                dict.pos.x,
+                len(buttonDict.content),
                 curses.A_NORMAL
             )
     

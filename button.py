@@ -1,6 +1,6 @@
 import curses
 import os
-from types import Pos
+from types import Pos, DispInfo
 
 class Button:
     def __init__(self, pos, content, order):
@@ -11,7 +11,7 @@ class Button:
     def onPress(self):
         pass
     def disp(self):
-        return {
-            "content": self.content,
-            "pos": self.pos
-        }
+        return DispInfo(
+            self.content,
+            self.pos
+        )
