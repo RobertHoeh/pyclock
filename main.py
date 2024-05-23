@@ -17,59 +17,40 @@ class Hub:
         self.dir = os.getcwd()
         self.loadedModules = [module for module in\
                               os.listdir(self.dir+"/modules")\
-                              if module != "__pycache__"]
+                              if module != "__pycache__" and module != "moduleAbstract.py"]
         self.currentModuleName = currentModuleName
-        self.currentModule = self.getClassFromModule(
-            self.getModule(currentModuleName),
-            currentModuleName.title(),
-
-        )
+        self.previousModuleName = currentModuleName
         self.tabsAt = []
         self.tabStr = self.createTabs()
-        #if self.cursorMode == True, only the first list is used
-        self.buttons = []
-        #format specified in definitions.py
-        self.cursorPos = Pos(0, 0)
-        #self.cursorMode, True = 1D (relies on order parameter and only
-        #uses self.cursorPos[0]), False = 2D (relies on where the element
-        #lies in self.buttons)
-        self.cursorMode = True
-
-    def checkModule(self, module):
-        return hasattr(
-            __import__(
-                f"modules.{module}",
-                globals(),
-                locals(),
-                [],
-                0)
-        )
+        self.size = os.get_terminal_size()
     
     def main(self):
         curses.wrapper(self.cursesMain)
 
-    def cursesMain(self, mainWindow):
+    def cursesMain(self, mainWin):
+        self.prepWin(mainWin)
+        while True:
+            self.checkModule()
+
+            self.currentModule.disp()
+            code = self.currentModule.input()
+            self.processCode(code)
+            
+            
+    def prepWin(self, mainWin):
         curses.cbreak()
         curses.curs_set(0)
-        mainWindow.clear()
-        self.size = os.get_terminal_size()
-        self.win = curses.newwin(self.size[1]-2, self.size[0], 2, 0)
-        self.win.border()
+        mainWin.clear()
+        self.moduleWin = mainWin.subwin(self.size[1]-2, self.size[0], 2, 0)
+        self.tabWin = mainWin.subwin(2, self.size[0], 0, 0)
+        self.moduleWin.border()
         for i in self.tabsAt:
-            self.win.addstr(0, i, "┴")
+            self.moduleWin.addstr(0, i, "┴")
         
-        temp=0
-        for i in self.tabStr.splitlines():
-            mainWindow.addstr(temp, 0, i)
-            temp += 1
-        mainWindow.refresh()
-        self.win.refresh()
-        self.getDispInfo()
-        while True:
-            self.disp(mainWindow)
-            self.resetRenderButtons(mainWindow)
-            self.renderButtons(mainWindow)
-            self.input(mainWindow)
+        for lineNum, line in enumerate(self.tabStr.splitlines()):
+            self.tabWin.addstr(lineNum, 0, line)
+        mainWin.refresh()
+        self.moduleWin.refresh()
 
     def getModule(self, name):
         try:
@@ -87,6 +68,29 @@ class Hub:
                 raise Exception(f"Class {name} somehow screwed up")
         except:
             raise Exception(f"Class {name} not found!")
+    
+    def checkModule(self):
+        if self.previousModuleName != self.currentModuleName\
+            or not getattr(self, "currentModule", False):
+                self.currentModule = self.getClassFromModule(
+                    self.getModule(self.currentModuleName),
+                    self.currentModuleName.title(),
+                    self.moduleWin
+                )
+        if self.currentModule is None:
+            raise Exception("Current module is None")
+    
+    def changeModule(self, name):
+        self.previousModuleName = self.currentModuleName
+        self.currentModuleName = name
+
+    def processCode(self, code):
+        if code != None:
+            match code:
+                case 1:
+                    self.changeModule("tabs")
+                case _:
+                    raise Exception("Module not found")
     
     def createTabs(self):
         finStr = ""

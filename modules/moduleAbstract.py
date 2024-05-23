@@ -29,3 +29,5 @@ class ModuleAbstract:
                 self.cursorPos.x -= 1
             case curses.KEY_ENTER:
                 self.buttons[self.cursorPos.y][self.cursorPos.x].onClick(self)
+            case curses.KEY_EXIT:
+                return 1

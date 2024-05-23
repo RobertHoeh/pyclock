@@ -4,8 +4,9 @@ from definitions import Pos, DispInfo
 might implement customizable text size/ fancy text."""
 
 class Clock:
-    def __init__(self, h12 = True):
+    def __init__(self, window, h12 = True):
         self.format = h12
+        self.window = window
 
     def disp(self):
         return [
