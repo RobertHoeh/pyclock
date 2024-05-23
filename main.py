@@ -36,6 +36,7 @@ class Hub:
             self.checkModule()
 
             self.currentModule.disp()
+            self.moduleWin.refresh()
             code = self.currentModule.input()
             self.processCode(code)
             
