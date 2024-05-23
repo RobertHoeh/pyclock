@@ -8,10 +8,13 @@ the modules/ folder. It contains tabs to switch between the different modules,
 and will dynamically import them based on which one is wanted.
 
 MODULE SPECIFIC INSTRUCTIONS
-Each module must subclass the ModuleAbstract class and inplement a disp() and
+Each module should* subclass the ModuleAbstract class and inplement a disp() and
 input() method. The module is given a separate window to do whatever they want
 in. The only reserved keybind is ESC for exiting the module and going into the
-tab system."""
+tab system.
+
+*You really only need to subclass it so far if you want to use input, buttons,
+etc."""
 class Hub:
     def __init__(self, currentModuleName="clock"):
         self.dir = os.getcwd()
