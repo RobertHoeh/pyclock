@@ -3,23 +3,15 @@ import os
 from definitions import Pos
 from importlib import import_module
 """
-This class works by creating tabs and providing each 
-class in funcs a specific tab and, once "clicked" on,
-it will enter that tab and the func will execute its
-specific code.
+This class works by providing a main place for all the modules listed in
+the modules/ folder. It contains tabs to switch between the different modules,
+and will dynamically import them based on which one is wanted.
 
-MODULE SPECIFIC INSTRUCTIONS:
-each module must implement a disp() and input() method.
-disp() must return a list containing a dictionary for
-each element on screen
-
-input() must return a list containg input object
-
-DICTIONARY INSTRUCTIONS:
-each dictionary must contain a display, x, and y
-
-display is literally what is displayed on screen and x and
-y is where it will be displayed on screen"""
+MODULE SPECIFIC INSTRUCTIONS
+Each module must subclass the ModuleAbstract class and inplement a disp() and
+input() method. The module is given a separate window to do whatever they want
+in. The only reserved keybind is ESC for exiting the module and going into the
+tab system."""
 class Hub:
     def __init__(self, currentModuleName="clock"):
         self.dir = os.getcwd()
