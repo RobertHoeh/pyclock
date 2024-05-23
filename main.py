@@ -62,30 +62,34 @@ class Hub:
     def getClassFromModule(self, module, name, *args):
         try:
             moduleClass = getattr(module, name)
-            self.module = moduleClass(*args)
+            module = moduleClass(*args)
             # ^ *args can break stuff if not passed in the right amount of arguments
-            if not self.module:
+            if module is None:
                 raise Exception(f"Class {name} somehow screwed up")
+            return module
         except:
             raise Exception(f"Class {name} not found!")
     
     def checkModule(self):
         if self.previousModuleName != self.currentModuleName\
             or not getattr(self, "currentModule", False):
+                module = self.getModule(self.currentModuleName)
+                if module is None:
+                    raise Exception("module is None")
                 self.currentModule = self.getClassFromModule(
-                    self.getModule(self.currentModuleName),
+                    module,
                     self.currentModuleName.title(),
                     self.moduleWin
                 )
         if self.currentModule is None:
-            raise Exception("Current module is None")
+            raise Exception(f"Current module class is None\n{self.currentModuleName.title()}")
     
     def changeModule(self, name):
         self.previousModuleName = self.currentModuleName
         self.currentModuleName = name
 
     def processCode(self, code):
-        if code != None:
+        if code:
             match code:
                 case 1:
                     self.changeModule("tabs")
