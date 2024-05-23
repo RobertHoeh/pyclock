@@ -48,10 +48,10 @@ class Hub:
     def main(self):
         curses.wrapper(self.cursesMain)
 
-    def cursesMain(self, w):
+    def cursesMain(self, mainWindow):
         curses.cbreak()
         curses.curs_set(0)
-        w.clear()
+        mainWindow.clear()
         self.size = os.get_terminal_size()
         self.win = curses.newwin(self.size[1]-2, self.size[0], 2, 0)
         self.win.border()
@@ -60,16 +60,16 @@ class Hub:
         
         temp=0
         for i in self.tabStr.splitlines():
-            w.addstr(temp, 0, i)
+            mainWindow.addstr(temp, 0, i)
             temp += 1
-        w.refresh()
+        mainWindow.refresh()
         self.win.refresh()
         self.getDispInfo()
         while True:
-            self.disp(w)
-            self.resetRenderButtons(w)
-            self.renderButtons(w)
-            self.input(w)
+            self.disp(mainWindow)
+            self.resetRenderButtons(mainWindow)
+            self.renderButtons(mainWindow)
+            self.input(mainWindow)
 
     def getModule(self, name):
         try:
@@ -87,63 +87,6 @@ class Hub:
                 raise Exception(f"Class {name} somehow screwed up")
         except:
             raise Exception(f"Class {name} not found!")
-
-    def getDispInfo(self):
-        self.dispInfo = self.module.disp()
-        self.buttons = self.module.input()
-
-    def disp(self, w):
-        for element in self.dispInfo:
-            for lineNum, line in enumerate(element.content):
-                self.win.addstr(element.pos.y + lineNum, element.pos.x, line)
-
-        for element in self.buttons:
-            for lineNum, line in enumerate(element.content):
-                self.win.addstr(element.pos.y + lineNum, element.pos.x, line)
-
-    def input(self, w):
-        match w.getch():
-            # executes if self.cursorMode == True
-            case curses.KEY_LEFT | curses.KEY_DOWN if self.cursorMode:
-                self.cursorPos.y += 1
-            case curses.KEY_RIGHT | curses.KEY_UP if self.cursorMode:
-                self.cursorPos.y -= 1
-            case curses.KEY_ENTER if self.cursorMode:
-                for i in self.buttons:
-                    if self.buttons.order == self.cursorPos.x:
-                        self.buttons[0][self.cursorPos.x].onClick(self)
-                        break
-
-            # executes if self.cursorMode == False
-            case curses.KEY_RIGHT:
-                self.cursorPos.y += 1
-            case curses.KEY_LEFT:
-                self.cursorPos.y -= 1
-            case curses.KEY_DOWN:
-                self.cursorPos.x += 1
-            case curses.KEY_UP:
-                self.cursorPos.x -= 1
-            case curses.KEY_ENTER:
-                self.buttons[self.cursorPos.y][self.cursorPos.x].onClick(self)
-
-    def renderButtons(self, w):
-        buttonDict = self.buttons[self.cursorPos.y][self.cursorPos.x].disp()
-        self.win.chgat(
-            buttonDict.pos.y,
-            buttonDict.pos.x,
-            len(buttonDict.content),
-            curses.A_REVERSE
-        )
-
-    def resetRenderButtons(self, w):
-        for i in self.buttons:
-            dict = i.disp()
-            self.win.chgat(
-                dict.pos.y,
-                dict.pos.x,
-                len(buttonDict.content),
-                curses.A_NORMAL
-            )
     
     def createTabs(self):
         finStr = ""
