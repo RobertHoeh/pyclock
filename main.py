@@ -46,9 +46,12 @@ class Hub:
         if termSize != self.size:
             self.size = termSize
             del termSize
+            self.mainWin.clear()
             self.mainWin.resize(self.size.lines, self.size.columns)
             self.tabWin.resize(2, self.size.columns)
             self.moduleWin.resize(self.size.lines - 2, self.size.columns)
+            self.decorateWin()
+            self.mainWin.refresh()
 
             
     def prepWin(self, mainWin):
@@ -57,14 +60,16 @@ class Hub:
         mainWin.clear()
         self.moduleWin = mainWin.subwin(self.size.lines - 2, self.size.columns, 2, 0)
         self.tabWin = mainWin.subwin(2, self.size.lines, 0, 0)
+        self.decorateWin()
+        mainWin.refresh()
+    
+    def decorateWin(self):
         self.moduleWin.border()
         for i in self.tabsAt:
             self.moduleWin.addstr(0, i, "┴")
         
         for lineNum, line in enumerate(self.tabStr.splitlines()):
             self.tabWin.addstr(lineNum, 0, line)
-        mainWin.refresh()
-        self.moduleWin.refresh()
 
     def getModule(self, name):
         try:
