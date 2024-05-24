@@ -31,15 +31,25 @@ class Hub:
         curses.wrapper(self.cursesMain)
 
     def cursesMain(self, mainWin):
+        self.mainWin = mainWin
         self.prepWin(mainWin)
         while True:
             self.checkModule()
-
+            self.resizeWindow()
             self.currentModule.disp()
             self.moduleWin.refresh()
             code = self.currentModule.input()
             self.processCode(code)
-            
+
+    def resizeWindow(self):
+        termSize = os.get_terminal_size()
+        if termSize != self.size:
+            self.size = termSize
+            del termSize
+            self.mainWin.resize(self.size.lines, self.size.columns)
+            self.tabWin.resize(2, self.size.columns)
+            self.moduleWin.resize(self.size.lines - 2, self.size.columns)
+
             
     def prepWin(self, mainWin):
         curses.cbreak()
