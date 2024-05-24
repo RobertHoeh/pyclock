@@ -1,4 +1,5 @@
 import curses
+from definitions import Pos
 class ModuleAbstract:
     def __init__(self, window, inputScheme):
         self.window = window
@@ -31,3 +32,9 @@ class ModuleAbstract:
                 self.buttons[self.cursorPos.y][self.cursorPos.x].onClick(self)
             case curses.KEY_EXIT:
                 return 1
+    def getCenter(self):
+        maxy, maxx = self.window.getmaxyx()
+        return Pos(
+            maxx // 2,
+            maxy // 2
+        )
