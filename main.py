@@ -55,8 +55,8 @@ class Hub:
         curses.cbreak()
         curses.curs_set(0)
         mainWin.clear()
-        self.moduleWin = mainWin.subwin(self.size[1]-2, self.size[0], 2, 0)
-        self.tabWin = mainWin.subwin(2, self.size[0], 0, 0)
+        self.moduleWin = mainWin.subwin(self.size.lines - 2, self.size.columns, 2, 0)
+        self.tabWin = mainWin.subwin(2, self.size.lines, 0, 0)
         self.moduleWin.border()
         for i in self.tabsAt:
             self.moduleWin.addstr(0, i, "┴")
