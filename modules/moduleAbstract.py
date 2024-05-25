@@ -1,9 +1,10 @@
 import curses
 from definitions import Pos
 class ModuleAbstract:
-    def __init__(self, window, inputScheme):
+    def __init__(self, window, inputScheme, cursorPos = Pos(0, 0)):
         self.window = window
         self.inputScheme = inputScheme
+        self.cursorPos = cursorPos
     def disp(self):
         ...
     def input(self):
