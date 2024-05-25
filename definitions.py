@@ -22,3 +22,10 @@ class Pos:
 class DispInfo:
     content: str
     pos: Pos
+
+@dataclass
+class Button:
+    pos: Pos
+    text: str
+    order: int
+    onPress: callable[..., any]
