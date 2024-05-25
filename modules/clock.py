@@ -14,7 +14,7 @@ class Clock(ModuleAbstract):
 
     def disp(self):
         timestr = time.strftime("%I:%M:%S")
-        center = super().getCenter()
+        center = self.getCenter()
         self.pos.y = center.y
         self.pos.x = center.x - len(timestr) // 2
         if self.previous != self.pos:
