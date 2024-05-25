@@ -5,8 +5,10 @@ class ModuleAbstract:
         self.window = window
         self.inputScheme = inputScheme
         self.cursorPos = cursorPos
+
     def disp(self):
         ...
+
     def input(self):
         if self.inputScheme is not None:
             match window.getch():
@@ -34,6 +36,16 @@ class ModuleAbstract:
                     self.buttons[self.cursorPos.y][self.cursorPos.x].onClick(self)
                 case curses.KEY_EXIT:
                     return 1
+
+    """Please pass max and min as keyword arguments"""
+    def clamp(self, var, max = None, min = None):
+        if max is not None and var > max:
+            return max
+        elif min is not None and var < min:
+            return min
+        else:
+            return var
+
     def getCenter(self):
         maxy, maxx = self.window.getmaxyx()
         return Pos(
