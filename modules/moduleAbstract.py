@@ -18,10 +18,7 @@ class ModuleAbstract:
                 case curses.KEY_RIGHT | curses.KEY_UP if self.cursorMode:
                     self.cursorPos.y -= 1
                 case curses.KEY_ENTER if self.cursorMode:
-                    for i in self.buttons:
-                        if self.buttons.order == self.cursorPos.x:
-                            self.buttons[0][self.cursorPos.x].onClick(self)
-                            break
+                    return self.cursorPos
 
                 # executes if self.cursorMode == False
                 case curses.KEY_RIGHT:
@@ -33,7 +30,7 @@ class ModuleAbstract:
                 case curses.KEY_UP:
                     self.cursorPos.x -= 1
                 case curses.KEY_ENTER:
-                    self.buttons[self.cursorPos.y][self.cursorPos.x].onClick(self)
+                    return self.cursorPos
                 case curses.KEY_EXIT:
                     return 1
 
