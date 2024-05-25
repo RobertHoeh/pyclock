@@ -11,8 +11,8 @@ def clamp(self, var, max = None, min = None):
 
 @dataclass
 class Pos:
-    x: int
-    y: int
+    x: int | str
+    y: int | str
 
     def clamp(self, maxx = None, minx = None, maxy = None, miny = None):
         self.x = clamp(self.x, max=maxx, min=minx)
