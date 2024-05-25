@@ -37,15 +37,6 @@ class ModuleAbstract:
                 case curses.KEY_EXIT:
                     return 1
 
-    """Please pass max and min as keyword arguments"""
-    def clamp(self, var, max = None, min = None):
-        if max is not None and var > max:
-            return max
-        elif min is not None and var < min:
-            return min
-        else:
-            return var
-
     def getCenter(self):
         maxy, maxx = self.window.getmaxyx()
         return Pos(
