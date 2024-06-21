@@ -1,6 +1,9 @@
 { pkgs ? import <nixpkgs> { } }:
 pkgs.mkShell {
     packages = [
-        pkgs.python3
-    ];
+    (pkgs.python3.withPackages (python-pkgs: [
+      python-pkgs.textual
+      python-pkgs.textual-dev
+    ]))
+  ];
 }
