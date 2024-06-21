@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 
 """Please pass max and min as keyword arguments"""
 def clamp(self, var, max = None, min = None):
@@ -26,6 +27,14 @@ class DispInfo:
 @dataclass
 class Button:
     pos: Pos
+    reEvaluatePos: bool
     text: str
     order: int
-    onPress: callable[..., any]
+    onPress: callable[..., any] | None
+
+loadedModules = [module for module in\
+    os.listdir(self.dir+"/modules")\
+    if module != "__pycache__"\
+    and module != "moduleAbstract.py"]
+
+Codes = Enum("Codes", [module.upper() for module in loadedModules] + ["TABS"])
