@@ -35,6 +35,7 @@ class Button:
 loadedModules = [module for module in\
     os.listdir(self.dir+"/modules")\
     if module != "__pycache__"\
-    and module != "moduleAbstract.py"]
+    and module != "moduleAbstract.py"
+    and module != "tabs.py"]
 
 Codes = Enum("Codes", [module.upper() for module in loadedModules] + ["TABS"])

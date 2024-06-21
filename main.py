@@ -1,6 +1,7 @@
 import curses
 import os
 from definitions import Pos, loadedModules, Codes
+from modules.tabs import Tabs
 from importlib import import_module
 """
 This class works by providing a main place for all the modules listed in
@@ -20,8 +21,7 @@ class Hub:
         self.dir = os.getcwd()
         self.currentModuleName = currentModuleName
         self.previousModuleName = currentModuleName
-        self.tabsAt = []
-        self.tabStr = self.createTabs()
+        self.inTabs = False
         self.size = os.get_terminal_size()
     
     def main(self):
@@ -31,12 +31,16 @@ class Hub:
         self.mainWin = mainWin
         self.prepWin(mainWin)
         while True:
-            self.checkModule()
-            self.resizeWindow()
-            self.currentModule.disp()
-            self.moduleWin.refresh()
-            code = self.currentModule.input()
-            self.processCode(code)
+            if self.inTabs:
+                self.tabs.disp()
+                self.tabs.input()
+            else:
+                self.checkModule()
+                self.resizeWindow()
+                self.currentModule.disp()
+                self.moduleWin.refresh()
+                code = self.currentModule.input()
+                self.processCode(code)
 
     def resizeWindow(self):
         termSize = os.get_terminal_size()
@@ -57,16 +61,13 @@ class Hub:
         mainWin.clear()
         self.moduleWin = mainWin.subwin(self.size.lines - 2, self.size.columns, 2, 0)
         self.tabWin = mainWin.subwin(2, self.size.lines, 0, 0)
+        self.tabs = Tabs(self.tabWin)
         self.decorateWin()
         mainWin.refresh()
     
     def decorateWin(self):
         self.moduleWin.border()
-        for i in self.tabsAt:
-            self.moduleWin.addstr(0, i, "┴")
-        
-        for lineNum, line in enumerate(self.tabStr.splitlines()):
-            self.tabWin.addstr(lineNum, 0, line)
+        self.tabs.decorateWin()
 
     def getModule(self, name):
         try:
