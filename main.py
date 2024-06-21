@@ -1,6 +1,6 @@
 import curses
 import os
-from definitions import Pos
+from definitions import Pos, loadedModules, Codes
 from importlib import import_module
 """
 This class works by providing a main place for all the modules listed in
@@ -18,9 +18,6 @@ etc."""
 class Hub:
     def __init__(self, currentModuleName="clock"):
         self.dir = os.getcwd()
-        self.loadedModules = [module for module in\
-                              os.listdir(self.dir+"/modules")\
-                              if module != "__pycache__" and module != "moduleAbstract.py"]
         self.currentModuleName = currentModuleName
         self.previousModuleName = currentModuleName
         self.tabsAt = []
@@ -117,15 +114,15 @@ class Hub:
     
     def createTabs(self):
         finStr = ""
-        for i in self.loadedModules:
+        for i in loadedModules:
             finStr += " ╭" + "─"*(len(i) - 3) + "╮"
             
         finStr += "\n"
         
-        for i in self.loadedModules:
+        for i in loadedModules:
             finStr += " │" + i[:-3] + "│"
         
-        for p, i in enumerate(self.loadedModules):
+        for p, i in enumerate(loadedModules):
             self.tabsAt.append(1 + p)
             self.tabsAt.append(2 + p + len(i) - 3)
 
