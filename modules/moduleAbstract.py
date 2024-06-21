@@ -1,6 +1,16 @@
 import curses
 from definitions import Pos
+
+"""
+An abstract class for building menus. To take advantage of it, subclass it and
+use it whever you wish.
+"""
 class ModuleAbstract:
+    """
+    window is a curses window
+    inputScheme defines the input method. True = 2d, False = 1d, None = no input
+    cursorPos is the starting position of the cursor. Default is 0, 0
+    """
     def __init__(self, window, inputScheme, cursorPos = Pos(0, 0)):
         self.window = window
         self.inputScheme = inputScheme
