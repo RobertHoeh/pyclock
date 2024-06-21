@@ -19,7 +19,7 @@ class Clock(ModuleAbstract):
         self.pos.x = center.x - len(timestr) // 2
         if self.previous != self.pos:
             self.window.clear()
-        self.previous = self.pos
+            self.previous = self.pos
 
 
         self.window.addstr(
