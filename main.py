@@ -25,5 +25,4 @@ class PyClock(App):
 
 
 if __name__ == "__main__":
-    app = PyClock()
-    app.run()
+    PyClock().run()
