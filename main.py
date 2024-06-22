@@ -2,11 +2,10 @@ from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, TabbedContent, TabPane
 from modules.clock import Clock
 from modules.timer import Timer
+from modules.stopwatch import Stopwatch
 
 
 class PyClock(App):
-    """A Textual app to manage stopwatches."""
-
     BINDINGS = [("d", "toggle_dark", "Toggle dark mode")]
 
     def compose(self) -> ComposeResult:
@@ -17,6 +16,8 @@ class PyClock(App):
                 yield Clock()
             with TabPane("Timer", id="Timer"):
                 yield Timer()
+            with TabPane("Stopwatch", id="Stopwatch"):
+                yield Stopwatch()
         yield Footer()
 
     def action_toggle_dark(self) -> None:
