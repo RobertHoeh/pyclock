@@ -8,7 +8,7 @@ class Clock(Static):
     
     def on_mount(self) -> None:
         self.update_clock()
-        self.set_interval(0.1, self.update_clock)
+        self.set_interval(1 / 60, self.update_clock)
     
     def update_clock(self) -> None:
         clock = datetime.now().time()
