@@ -6,6 +6,7 @@ from modules.stopwatch import Stopwatch
 
 
 class PyClock(App):
+    CSS_PATH = "clock.tcss"
     BINDINGS = [("d", "toggle_dark", "Toggle dark mode")]
 
     def compose(self) -> ComposeResult:

@@ -1,0 +1,12 @@
+Horizontal {
+    TimerPart {
+        padding: 0;
+        margin: 0;
+        Button {
+            width: auto;
+            padding: 0;
+            margin: 0;
+            min-width: 1;
+        }
+    }
+}
