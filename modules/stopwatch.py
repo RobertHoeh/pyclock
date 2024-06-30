@@ -52,14 +52,15 @@ class Stopwatch(Static):
         """Event handler called when a button is pressed."""
         button_id = event.button.id
         time_display = self.query_one(TimeDisplay)
-        if button_id == "start":
-            time_display.start()
-            self.add_class("started")
-        elif button_id == "stop":
-            time_display.stop()
-            self.remove_class("started")
-        elif button_id == "reset":
-            time_display.reset()
+        match button_id:
+            case "start":
+                time_display.start()
+                self.add_class("started")
+            case "stop":
+                time_display.stop()
+                self.remove_class("started")
+            case "reset":
+                time_display.reset()
 
     def compose(self) -> ComposeResult:
         """Create child widgets of a stopwatch."""
